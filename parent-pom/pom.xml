@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>552340ee-94ce-4fa2-9612-79fe947de352</groupId>
+		<artifactId>solutions-bom</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../bom/pom.xml</relativePath>
+	</parent>
+
+	<groupId>552340ee-94ce-4fa2-9612-79fe947de352</groupId>
+	<artifactId>solutions-parent-pom</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+	<name>solutions-parent-pom</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<app.runtime>4.4.0-20220824</app.runtime>
+		<mule.maven.plugin.version>3.8.0</mule.maven.plugin.version>
+	</properties>
+
+	<build>
+		<resources>
+			<resource>
+			<directory>src/main/resources</directory>
+			<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<configuration>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>p12</nonFilteredFileExtension>
+						<nonFilteredFileExtension>crt</nonFilteredFileExtension>
+						<nonFilteredFileExtension>pem</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.mule.tools.maven</groupId>
+					<artifactId>mule-maven-plugin</artifactId>
+					<configuration>
+						<cloudhub2Deployment>
+						<businessGroup/>
+						<environment>prod</environment>
+
+						<muleVersion>${app.runtime.semver}</muleVersion>
+						<target>Cloudhub-US-East-2</target>
+						<provider>MC</provider>
+						<replicas>1</replicas>
+						<vCores>0.1</vCores>
+						<applicationName>${project.name}</applicationName>
+						<connectedAppClientId>${ap.ca.client_id}</connectedAppClientId>
+						<connectedAppClientSecret>${ap.ca.client_secret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<properties>
+							<anypoint.platform.client_id>${ap.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${ap.client_secret}</anypoint.platform.client_secret>
+						</properties>
+						<deploymentSettings>
+							<http>
+							<inbound>
+								<lastMileSecurity>true</lastMileSecurity>
+							</inbound>
+							</http>
+						</deploymentSettings>
+						<integrations>
+							<services>
+							<objectStoreV2>
+								<enabled>true</enabled>
+							</objectStoreV2>
+							</services>
+						</integrations>
+						</cloudhub2Deployment>
+					</configuration>					
+					<extensions>true</extensions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
